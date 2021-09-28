@@ -11,9 +11,9 @@ import (
 const version = "1.0.0"
 
 type AppStatus struct {
-	Status       string 
-	Environment  string 
-	Version      string 
+	Status       string    `json:"status"`
+	Environment  string    `json:"environment"` 
+	Version      string    `json:"version"` 
 }
 
 type config struct {
@@ -31,15 +31,20 @@ func main() {
 	
 
 	http.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request){
+		
 		currentStatus := AppStatus {
-			Status      : "Available",
+			Status      : "available",
 			Environment : cfg.env,
 			Version     : version,
 		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 		err := json.NewEncoder(w).Encode(currentStatus)
 		if err !=nil {
 			log.Printf("Error sending the json response %s\n", err)
 		}
+
 	})
 
 	err := http.ListenAndServe(fmt.Sprintf(":%v", cfg.port), nil)

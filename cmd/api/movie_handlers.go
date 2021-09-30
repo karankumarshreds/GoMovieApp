@@ -4,7 +4,6 @@ import (
 	"time"
 	"strconv"
 	"net/http"
-	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/karankumarshreds/GoMovieApp/pkg/models"
 )
@@ -21,9 +20,10 @@ func (app *Application) getOneMovie(w http.ResponseWriter, r *http.Request) {
 		Description: "Some random description",
 		Title: "Batman",
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(movie)
+	err = app.utils.WriteJSON(w, http.StatusOK, movie)
+	if err != nil {
+		app.logger.Println("Error while converting to JSON", err)
+	}
 }
 
 func (app *Application) getAllMovies(w http.ResponseWriter, r *http.Request) {

@@ -8,6 +8,7 @@ import (
 	"time"
 	"net/http"
 	_"github.com/gorilla/mux"
+	"github.com/karankumarshreds/GoMovieApp/pkg/utils"
 )
 
 const version = "1.0.0"
@@ -25,6 +26,7 @@ type Application struct {
 		env string 
 	}
 	logger *log.Logger
+	utils utils.Utils
 }
 
 func main() {
